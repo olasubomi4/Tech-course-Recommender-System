@@ -96,6 +96,10 @@ class PostgreSql:
             logger.error(e)
             return False
 
+    def readComments(self) -> pd.DataFrame:
+        return pd.read_sql_query("SELECT * FROM comments",con=self.__getConnectionEngine())
+
+
 
 
 
