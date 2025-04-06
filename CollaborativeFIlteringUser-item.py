@@ -3,7 +3,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 # Load dataset
-ratings_df = pd.read_csv("/Users/odekunleolasubomi/PycharmProjects/Recommender/modified_comments_with_author_id.csv")
+ratings_df = pd.read_csv("modified_comments_with_author_id.csv")
 ratings_df.dropna(inplace=True)
 
 # Filter users with at least 5 comments

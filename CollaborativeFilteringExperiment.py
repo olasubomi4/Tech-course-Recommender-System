@@ -1,8 +1,8 @@
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
-
-ratings_df=pd.read_csv("/Users/odekunleolasubomi/PycharmProjects/Recommender/modified_comments_with_author_id.csv")
+courses_data = pd.read_csv('Course_info.csv')
+ratings_df=pd.read_csv("modified_comments_with_author_id.csv")
 print(ratings_df.shape)
 ratings_df.dropna(inplace=True)
 print(ratings_df.shape)
@@ -45,9 +45,18 @@ def get_similar_courses(course_id, top_n=5):
 
     # Get similarity scores for the given course
     similar_courses = item_similarity_df.loc[course_id].sort_values(ascending=False)
-
-    # Return top N most similar courses (excluding the course itself)
-    return similar_courses.drop(course_id).head(top_n)
+    course_title = courses_data.loc[courses_data['id'] == course_id, 'title'].values[0]
+    
+    # Get the most similar courses (excluding the course itself)
+    similar_course_ids = similar_courses.drop(course_id).head(top_n).index  # Extract IDs
+    
+    # Fetch titles for similar courses
+    similar_courses_with_titles = courses_data[courses_data['id'].isin(similar_course_ids)][['id', 'title']]
+    
+    # Print the course title
+    print(f"Course ID {course_id}: {course_title}")
+    
+    return similar_courses_with_titles
 
 
 # Example: Get the top 5 most similar courses to a given course_id
