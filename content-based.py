@@ -6,16 +6,9 @@ from sentence_transformers import SentenceTransformer
 import nltk
 from nltk.corpus import stopwords
 import re
-import neattext.functions as nfx
 
-comments_data = pd.read_csv('./Comments.csv')
 courses_data = pd.read_csv('./Course_info.csv')
-
-courses_data = courses_data.head(len(courses_data)//4)
-comments_data=comments_data.head(len(comments_data)//4)
-
-print('Courses Data Shape is', courses_data.shape)
-print('Comments Data Shape is', comments_data.shape)
+courses_data = courses_data[courses_data["category"].isin(["Development","IT & Software"])]
 
 # Remove stopwords and special characters
 courses_data['title'].value_counts()
@@ -79,7 +72,7 @@ def search_courses_by_category(query, model, category=None, sub_category=None, t
     headline_matrix = model.encode(filtered_courses['headline_clean'].tolist())
 
     title_sim = cosine_similarity(query_vector, title_matrix)[0]
-    headline_sim = cosine_similarity(query_vector, headline_matrix)[0]
+    headline_sim =  (query_vector, headline_matrix)[0]
 
     combined_score = title_weight * title_sim + headline_weight * headline_sim
     top_indices = np.argsort(combined_score)[::-1][:top_n]
