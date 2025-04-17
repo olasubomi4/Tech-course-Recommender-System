@@ -39,7 +39,6 @@ def similar_courses(course_id, diversify_recommendations=False,recompute_cached_
                                            axis=1)  # applying combined_features() method over each rows of dataframe and storing the combined string in "combined_features" column
 
         # applying combined_features() method over each rows of dataframe and storing the combined string in "combined_features" column
-
         cv = CountVectorizer()
         count_matrix=cv.fit_transform(courses_data["combined_features"])
         cosine_sim = cosine_similarity(count_matrix)
@@ -129,12 +128,6 @@ def similar_courses(course_id, diversify_recommendations=False,recompute_cached_
         for element in sorted_similar_movies[:top_n]:
             b=index_to_course_id[element[0]]
             similar_courses_list.append(b)
-        # else:
-        #     print("Top " + str(sort_size) + "similar movies to " + course_user_likes + " are:\n")
-        #     for element in sorted_similar_movies[:sort_size]:
-        #         b=index_to_course_id[element[0]]
-        #         similar_courses_list.append(b)
-
         return similar_courses_list
 
     cosine_sim, course_id_to_index, index_to_course_id=getSimilarityScore()
@@ -168,16 +161,4 @@ def similar_courses(course_id, diversify_recommendations=False,recompute_cached_
 
     return recommend_course_pd
 
-
-# import time
-# start = time.time()
-# similar_courses(queryId,diversify_recommendations=True,recompute_cached_data=False)
-# end = time.time()
-# print(f" dont re-compute similarity scores {end - start}")
-
-
-# start = time.time()
-# similar_courses(queryId,diversify_recommendations=True,recompute_similarities=True)
-# end = time.time()
-# print(f" re-compute similarity scores {end - start}")
 

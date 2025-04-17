@@ -9,7 +9,6 @@ import joblib
 
 courses_data = pd.read_csv('./Course_info.csv')
 
-
 recompute_cached_data=False
 
 def search_course(query,language=None,free=None, category=None, sub_category=None,recompute_cached_data=False,top_n=5):
@@ -68,22 +67,6 @@ def search_course(query,language=None,free=None, category=None, sub_category=Non
     title_count_embeddings,headline_count_embeddings,course_id_to_index,index_to_course_id= get_embeddings()
 
 
-    # Assign weights to title and headline similarities for combined similarity
-    # def search_courses(query, model, top_n=5, title_weight=0.7, headline_weight=0.3):
-    #     query_vector = model.encode([query])
-    #
-    #     title_sim_scores = cosine_similarity(query_vector, title_count_embeddings)[0]
-    #     headline_sim_scores = cosine_similarity(query_vector, headline_count_embeddings)[0]
-    #
-    #     # Combine similarities of title and headline
-    #     combined_scores = (title_weight * title_sim_scores) + (headline_weight * headline_sim_scores)
-    #
-    #     similar_indices = np.argsort(combined_scores)[::-1][:top_n]
-    #     index_to_filter_courses_index= [index_to_course_id[top_indice] for top_indice in similar_indices]
-    #     recommended_courses = courses_data[courses_data['id'].isin(index_to_filter_courses_index)]
-    #     print("Recommendations done for", query)
-    #     return recommended_courses[['title', 'headline', 'category', 'subcategory']]
-    #     # return courses_data.iloc[similar_indices][['title', 'headline']]
 
 
     def search_courses_by_category(query, model,language=None,free=None, category=None, sub_category=None, top_n=5, title_weight=0.7, headline_weight=0.3):
@@ -102,9 +85,6 @@ def search_course(query,language=None,free=None, category=None, sub_category=Non
         if filtered_courses.empty:
             return pd.DataFrame(columns=['title', 'headline'])
 
-        # title_matrix = model.encode(filtered_courses['title_clean'].tolist())
-        # headline_matrix = model.encode(filtered_courses['headline_clean'].tolist())
-        a=title_count_embeddings
         title_sim = cosine_similarity(query_vector, title_count_embeddings)[0]
         headline_sim =  cosine_similarity(query_vector,headline_count_embeddings)[0]
 
@@ -123,35 +103,6 @@ def search_course(query,language=None,free=None, category=None, sub_category=Non
 
         return recommended_courses
 
-
-    # # Example: Search for courses related to "Cooking"
-    # print(search_courses("Cooking", model, top_n=5))
-    #
-    # # Example: Search for courses related to "Machine Learning"
-    # print(search_courses("Machine Learning", model, top_n=5))
-
-    # Example: Search for courses related to "Excel"
-    # print(search_courses("Excel for Experts", model, top_n=5))
-
-    # # Example: Search for courses related to "Excel"
-    # print(search_courses_by_category("Excel for Experts", model, category='Office Productivity', top_n=5,free=True))
-    #
-    # Example: Search for courses related to "Excel"
-    # print(search_courses_by_category("Machine learning", model, top_n=5,language="english"))
     result=search_courses_by_category(query, model, top_n=top_n,language=language, free=free, category=category, sub_category=sub_category)
     print(result)
     return result
-
-    # # Example: Search for courses related to "Finance and Technology"
-    # print(search_courses_by_category("Learn Algo Trading with Finance Strategies", model, category='Technology', top_n=5))
-
-# import time
-# start = time.time()
-# search_course("Machine learning",language="English",recompute_cached_data=False)
-# end = time.time()
-# print(f"recompute embedding {end - start}")
-#
-# start = time.time()
-# search_course("Machine learning",language="English",recompute_cached_data=False)
-# end = time.time()
-# print(f"recompute embedding {end - start}")
