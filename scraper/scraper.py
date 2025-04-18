@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, wait
 from db.PostgreSql import PostgreSql
 from dto.Comment import Comment
 from udemyResponseObject import UdemyResponse
+
 load_dotenv()
 cache_user = os.environ["CACHE_USER"]
 cookie = os.environ["COOKIE"]

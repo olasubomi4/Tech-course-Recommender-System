@@ -56,6 +56,7 @@ def search_course(user_id,recompute_cached_data=True, threshold=2.5, top_n=5):
 
         # Compute weighted rating prediction (weighted by similarity)
         weights = similar_users.loc[valid_ratings.index]
+
         if weights.sum() == 0:  # Avoid division by zero
             return None
         predicted_rating = np.dot(valid_ratings, weights) / weights.sum()
@@ -94,18 +95,3 @@ def search_course(user_id,recompute_cached_data=True, threshold=2.5, top_n=5):
     recommended_courses_pd.head(5)
     return recommended_courses_pd
 
-# import time
-#
-# start = time.time()
-# search_course(23448456,recompute_cached_data=False)
-# end = time.time()
-# print(f"Search time recompute false: {end - start}")
-#
-# start = time.time()
-# search_course(23448456,ratings_df,re_compute_similarity_scores=True)
-# end = time.time()
-# print(f"Search time recompute True: {end - start}")
-# Example: Get top 5 recommendations for user 1001
-# recommended_courses_user_1 = get_recommendations(23448456, threshold=2.5, top_n=5)
-
-# print("Recommended courses for User:", recommended_courses_user_1)

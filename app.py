@@ -45,8 +45,6 @@ def search_courses():
 
     return jsonify(responseObject.jsonfyResponse())
 
-    pass
-
 @app.route("/courses/<int:user_id>/recommendations", methods=['GET'])
 def recommend_courses_for_user(user_id):
     responseObject= ResponseObject();
